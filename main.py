@@ -2,6 +2,10 @@ from typing import Dict, List
 from autogen import ConversableAgent
 import sys
 import os
+import json
+import math
+from dotenv import load_dotenv
+load_dotenv()  # This loads environment variables from .env
 
 
 def fetch_restaurant_data(restaurant_name: str) -> Dict[str, List[str]]:
@@ -35,25 +39,23 @@ def fetch_restaurant_data(restaurant_name: str) -> Dict[str, List[str]]:
 
 
 def calculate_overall_score(restaurant_name: str, food_scores: List[int], customer_service_scores: List[int]) -> Dict[str, float]:
-    # TODO
-    # This function takes in a restaurant name, a list of food scores from 1-5, and a list of customer service scores from 1-5
-    # The output should be a score between 0 and 10, which is computed as the following:
-    # SUM(sqrt(food_scores[i]**2 * customer_service_scores[i]) * 1/(N * sqrt(125)) * 10
-    # The above formula is a geometric mean of the scores, which penalizes food quality more than customer service.
-    # Example:
-    # > calculate_overall_score("Applebee's", [1, 2, 3, 4, 5], [1, 2, 3, 4, 5])
-    # {"Applebee's": 5.048}
-    # NOTE: be sure to that the score includes AT LEAST 3  decimal places. The public tests will only read scores that have
-    # at least 3 decimal places.
-    pass
+    # Check if the lists are empty or have different lengths
+    if not food_scores or not customer_service_scores or len(food_scores) != len(customer_service_scores):
+        return {restaurant_name: 0.0}
 
+    # Number of reviews
+    N = len(food_scores)
+    total_score = 0.0
 
-def get_data_fetch_agent_prompt(restaurant_query: str) -> str:
-    # TODO
-    # It may help to organize messages/prompts within a function which returns a string.
-    # For example, you could use this function to return a prompt for the data fetch agent
-    # to use to fetch reviews for a specific restaurant.
-    pass
+    # Calculate the weighted geometric mean score
+    for food_score, service_score in zip(food_scores, customer_service_scores):
+        total_score += math.sqrt(food_score ** 2 * service_score)
+
+    # Final overall score calculation
+    overall_score = (total_score / (N * math.sqrt(125))) * 10
+    overall_score = round(overall_score, 3)  # Ensure at least 3 decimal places
+
+    return {restaurant_name: overall_score}
 
 
 def extract_function_arguments(chat_result):
@@ -100,18 +102,30 @@ def get_review_analyzer_prompt(reviews: List[str]) -> str:
         prompt += f"\n- \"{review}\""
     return prompt
 
-# Do not modify the signature of the "main" function.
+
+def extract_scores(reviews_data: Dict) -> [List[int], List[int]]:  # type: ignore
+    # Initialize empty lists for scores
+    food_scores = []
+    customer_service_scores = []
+
+    # Iterate through each review and extract scores
+    for review in reviews_data.get("reviews", []):
+        food_scores.append(review.get("food_score", 0))
+        customer_service_scores.append(review.get("customer_service_score", 0))
+
+    return food_scores, customer_service_scores
 
 
 def main(user_query: str):
-    entrypoint_system_message = "You are a food critic. You get my query with the name of a resturant and provide accurate and insightful reviews about that restaurant."
-    assistant_system_message = "You are an assistant willing to help precisely."
+    entrypoint_system_message = "You are a supervisor wiolling to controll a chat process."
+    assistant_system_message = "You are a food adict knowing the full name of every resturant."
     analyzer_system_message = "You are an analysis expert tasked with providing accurate, detailed assessments based on specified guidelines."
 
-    llm_config = {"config_list": [{"model": "gpt-4o-mini", "api_key": os.environ.get("OPENAI_API_KEY")}]}
+    llm_config = {"config_list": [{"model": "gpt-4o-mini", "api_key": os.getenv("OPENAI_API_KEY")}]}
 
     # the main entrypoint/supervisor agent
     entrypoint_agent = ConversableAgent("entrypoint_agent", system_message=entrypoint_system_message, llm_config=llm_config)
+    entrypoint_agent.register_for_execution(name="fetch_restaurant_data")(fetch_restaurant_data)
 
     # the assistant agent parsing the quesy to extract the resturant name
     assistant_agent = ConversableAgent("assistant_agent", system_message=assistant_system_message, llm_config=llm_config)
@@ -119,10 +133,12 @@ def main(user_query: str):
 
     analyzer_agent = ConversableAgent("analyzer_agent", system_message=analyzer_system_message, llm_config=llm_config)
 
+    print(user_query)
+
     # extracting the resturant name
     result = entrypoint_agent.initiate_chat(
         assistant_agent,
-        message=f"Return the arguments of the function based on this query: {user_query}. Do not add any markdown.",
+        message=f"{user_query} Do not add any markdown. Do not add any word to the name mentioned in the query but correct the mentioned name if any charachter is missed.",
         summary_method="last_msg",
         max_turns=1
     )
@@ -132,15 +148,25 @@ def main(user_query: str):
     reviews = fetch_restaurant_data(resturant_name).get(resturant_name)
     # temp_reviews = [reviews[0]]
 
+    # extracting scores
     result = entrypoint_agent.initiate_chat(
         analyzer_agent,
         message=get_review_analyzer_prompt(reviews),
         summary_method="last_msg",
         max_turns=1,
     )
+    analyzed_results = json.loads(result.chat_history[1]["content"])
+    food_scores, customer_service_scores = extract_scores(analyzed_results)
+
+    # calculating the overal score
+    score = calculate_overall_score(resturant_name, food_scores, customer_service_scores)
+
+    print(score)
 
 
-# DO NOT modify this code below.
 if __name__ == "__main__":
-    assert len(sys.argv) > 1, "Please ensure you include a query for some restaurant when executing main."
-    main(sys.argv[1])
+    main("What is the overall score for In N Out?")
+    # "What is the overall score for taco bell?"
+    # "What is the overall score for In N Out?"
+    # "How good is the restaurant Chick-fil-A overall?"
+    # "What is the overall score for Krispy Kreme?"
