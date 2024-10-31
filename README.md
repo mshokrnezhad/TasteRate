@@ -1,4 +1,4 @@
-# TasteRate: Summarizing Unstructured, Natural-Language Data (Restaurant Reviews)
+# TasteRate
 
 TasteRate is a Python code that leverages Large Language Models (LLMs) to analyze and summarize unstructured, natural-language data from restaurant reviews. These reviews are qualitative, and the code uses AutoGen framework to fetch, summarize, and score each review. TasteRate can answer questions like "How good is Subway as a restaurant?" or "What would you rate In N Out?" by returning a calculated score based on food and service quality.
 
