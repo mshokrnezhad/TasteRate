@@ -67,6 +67,8 @@ The agent assigns scores by analyzing the adjectives used in the review text.
 
 The overall score is calculated using the extracted food and customer service scores by applying the `calculate_overall_score` function to aggregate these scores into a final rating for the restaurant.
 
+---
+
 ## Thank You 🙏
 
 Thank you for exploring TasteRate with me! I hope you find this repository helpful and inspiring as you delve into analyzing restaurant reviews with LLMs. Feel free to fork the repo and make contributions. I will review them as soon as possible, and your contributions will be merged into the main repository.
