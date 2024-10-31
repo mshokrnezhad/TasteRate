@@ -18,6 +18,14 @@ TasteRate leverages several key features of the AutoGen framework:
 - **ConversableAgent**: This agent handles interactions between LLMs, managing communication and execution of tasks in a multi-agent workflow.
 - **initiate_chat**: This function initiates a conversation between agents defined using ConversableAgent, allowing them to communicate and collaborate to solve tasks.
 
+### Note on Challenges with AutoGen
+
+During the development of TasteRate, some challenges were encountered while using the AutoGen framework:
+
+- When restricting the number of interactions between agents, the agents sometimes did not execute their assigned functions correctly.
+- There was difficulty in finding ways to stall interactions in order to run functions first, and then continue interactions between agents once the function execution was complete.
+- Adding the results of function calls directly into the chat history for passing to other agents was also challenging, limiting effective collaboration.
+
 ## Setup: Environment Variables, Virtual Environment, and Dependencies
 
 To use TasteRate, we recommend setting up a virtual environment and installing the required packages from `requirements.txt`.
