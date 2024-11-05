@@ -34,6 +34,31 @@ During the development of TasteRate, some challenges were encountered while usin
 - There was difficulty in finding ways to stall interactions in order to run functions first, and then continue interactions between agents once the function execution was complete.
 - Adding the results of function calls directly into the chat history for passing to other agents was also challenging, limiting effective collaboration.
 
+## Swarm in TasteRate
+
+OpenAI's Swarm is the other framework that TasteRate utilizes to develop multi-agent workflows. While similar to AutoGen, Swarm is specifically designed for educational purposes.
+
+### Features of Swarm in TasteRate
+
+TasteRate capitalizes on several key features of the Swarm framework:
+
+- **Agent**: Defines agents in Swarm, including their name, instructions, and model.
+- **client.run**: Initiates conversations between the agents defined using Agent, enabling communication and collaboration to complete tasks.
+
+### Recommended Architecture
+
+In utilizing Swarm to extract the name of a restaurant from user queries, the architecture involves multiple agents working sequentially:
+
+- **Entry Point Agent**: Manages the overall workflow, initiates conversations, and extracts the restaurant name from the user query.
+- **Extractor & Fetcher Agents**: Transforms the extracted name into a format that can be saved in the data file.
+
+### Note on Challenges with AutoGen
+
+Throughout the development of TasteRate, certain challenges arose when using the Swarm framework:
+
+- LLMs lack stability, producing varying outputs in different runs, which compromises their reliability in production environments. This is why we used Swarm to just implement the initial step of TasteRate.
+- LLMs execute assigned functions based on the queries they receive and autonomously make decisions, resulting in unpredictable function execution. I was unable to find a method to ensure that LLMs consistently execute specific functions, nor could I effectively manage the passing of results between LLMs after or before processing.
+
 ## Setup: Environment Variables, Virtual Environment, and Dependencies
 
 To use TasteRate, we recommend setting up a virtual environment and installing the required packages from `requirements.txt`. Regarding Swarm, check [here](https://github.com/openai/swarm) to see the installation instructions.
@@ -71,6 +96,7 @@ The overall score is calculated using the extracted food and customer service sc
 ## TasteRate Codebase
 
 - **`main_autogen.py`**: The implementation of TasteRate based on AutoGen. It includes code for all steps.
+- **`main_swarm.py`**: The implementation of TasteRate based on Swarm. It includes only Step 1.
 - **`requirements.txt`**: Lists all required packages for TasteRate.
 ---
 
