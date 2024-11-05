@@ -1,6 +1,6 @@
 
 from typing import Dict, List
-from autogen import ConversableAgent
+from main_autogen import ConversableAgent
 import sys
 import os
 import json
