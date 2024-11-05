@@ -70,7 +70,7 @@ The overall score is calculated using the extracted food and customer service sc
 
 ## TasteRate Codebase
 
-- **`main_autogen.py`**: The implementation of TasteRate based on AutoGen. It includes code for data fetching, analysis, and scoring.
+- **`main_autogen.py`**: The implementation of TasteRate based on AutoGen. It includes code for all steps.
 - **`requirements.txt`**: Lists all required packages for TasteRate.
 ---
 
