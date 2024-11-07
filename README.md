@@ -61,7 +61,10 @@ Throughout the development of TasteRate, certain challenges arose when using the
 
 ## Setup: Environment Variables, Virtual Environment, and Dependencies
 
-To use TasteRate, we recommend setting up a virtual environment and installing the required packages from `requirements.txt`. Regarding Swarm, check [here](https://github.com/openai/swarm) to see the installation instructions.
+To use TasteRate, we recommend setting up a virtual environment. 
+
+- To run autogen-related coode, install the required packages from `requirements_autogen.txt`.
+- Regarding Swarm, check [here](https://github.com/openai/swarm) to see the installation instructions.
 
 To access LLM capabilities, create your own API Key by following [OpenAI Documentation](https://platform.openai.com/docs/quickstart). Store this API key in an environment variable named `OPENAI_API_KEY`.
 
