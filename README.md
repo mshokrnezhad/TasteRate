@@ -7,7 +7,7 @@
 
 TasteRate is a Python code that leverages Large Language Models (LLMs) to analyze and summarize unstructured, natural-language data from restaurant reviews. These reviews are qualitative, and the code uses agent design frameworks to fetch, summarize, and score each review. TasteRate can answer questions like "How good is Subway as a restaurant?" or "What would you rate In N Out?" by returning a calculated score based on food and service quality.
 
-Implementing TasteRate serves as an incentive to explore different LLM-based agent design frameworks. So far, we have successfully tested AutoGen, Swarm, and MetaGPT.
+Implementing TasteRate serves as an incentive to explore different LLM-based agent design frameworks. So far, we have successfully tested [AutoGen](#autogen-in-tasterate), [Swarm](#swarm-in-tasterate), and [MetaGPT](#metagpt-in-tasterate).
 
 ## AutoGen in TasteRate
 
