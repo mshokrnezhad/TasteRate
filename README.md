@@ -1,7 +1,7 @@
 # TasteRate
 
 <div align="center">
-  <img src="TasteRate.png" alt="drawing" width="600"/>
+  <img src="images/TasteRate.png" alt="drawing" width="600"/>
 </div>
 
 
@@ -10,6 +10,10 @@ TasteRate is a Python code that leverages Large Language Models (LLMs) to analyz
 Implementing TasteRate serves as an incentive to explore different LLM-based agent design frameworks. So far, we have successfully tested [AutoGen](#autogen-in-tasterate), [Swarm](#swarm-in-tasterate), and [MetaGPT](#metagpt-in-tasterate).
 
 ## AutoGen in TasteRate
+
+<div align="center">
+  <img src="images/autogen.png" alt="drawing" width="600"/>
+</div>
 
 The primary framework that TasteRate employs to develop multi-agent workflows is AutoGen, which involves several LLMs collaborating. AutoGen allows you to define "control flows" or "conversation flows" between LLMs, enabling them to interact and solve complex tasks as a team. With AutoGen, TasteRate defines a network of LLM agents for efficient data processing, reasoning, and evaluation. TasteRate relies on the **GPT-4o-mini model** for its operations due to its cost efficiency, providing similar performance to GPT-4o but at a significantly reduced cost.
 
@@ -38,6 +42,10 @@ During the development of TasteRate, some challenges were encountered while usin
 
 ## Swarm in TasteRate
 
+<div align="center">
+  <img src="images/swarm.jpeg" alt="drawing" width="600"/>
+</div>
+
 OpenAI's Swarm is the other framework that TasteRate utilizes to develop multi-agent workflows. While similar to AutoGen, Swarm is specifically designed for educational purposes.
 
 ### Features of Swarm in TasteRate
@@ -62,6 +70,10 @@ Throughout the development of TasteRate, certain challenges arose when using the
 - LLMs execute assigned functions based on the queries they receive and autonomously make decisions, resulting in unpredictable function execution. I was unable to find a method to ensure that LLMs consistently execute specific functions, nor could I effectively manage the passing of results between LLMs after or before processing.
 
 ## MetaGPT in TasteRate
+
+<div align="center">
+  <img src="images/metagpt.png" alt="drawing" width="600"/>
+</div>
 
 MetaGPT is the other framework that TasteRate utilizes, an advanced agent-based framework designed for orchestrating complex multi-agent workflows with LLMs. MetaGPT provides a flexible and scalable environment for agents to interact, execute functions, and pass data seamlessly.
 
